@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hockey Shot Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #111;
+    }
+
+    #rink {
+      background: url('rink.png') no-repeat center/contain;
+      width: 800px;
+      height: 400px;
+      position: relative;
+    }
+
+    .shot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+
+    .goal {
+      background: red;
+    }
+
+    .miss {
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="rink" oncontextmenu="return false;"></div>
+
+  <script>
+    const rink = document.getElementById('rink');
+    rink.addEventListener('mousedown', function (e) {
+      const rect = rink.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const result = e.button === 2 ? 'miss' : 'goal';
+
+      const dot = document.createElement('div');
+      dot.classList.add('shot', result);
+      dot.style.left = x + 'px';
+      dot.style.top = y + 'px';
+
+      rink.appendChild(dot);
+    });
+  </script>
+</body>
+</html>
