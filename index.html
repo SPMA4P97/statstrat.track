@@ -6,17 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       background: #f8f9fa;
       padding: 20px;
       text-align: center;
     }
+
     header {
       font-size: 24px;
       font-weight: bold;
       margin-bottom: 10px;
     }
+
     .inputs, .controls {
       display: flex;
       justify-content: center;
@@ -24,10 +26,52 @@
       margin: 10px auto;
       flex-wrap: wrap;
     }
+
     input, select, button {
-      padding: 5px 10px;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 14px;
+      background: white;
+      transition: all 0.2s ease;
     }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+    }
+
+    button {
+      background-color: #0d6efd;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+    }
+
+    button:hover {
+      background-color: #0b5ed7;
+    }
+
+    .clear-btn {
+      background: #dc3545;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      border: none;
+    }
+
+    .clear-btn:hover {
+      background: #bb2d3b;
+    }
+
     .rink-container {
       position: relative;
       width: 800px;
@@ -35,7 +79,10 @@
       margin: 20px auto;
       background: url('rink.png') no-repeat center/contain;
       border: 1px solid #ccc;
+      border-radius: 12px;
+      background-color: white;
     }
+
     .dot {
       width: 12px;
       height: 12px;
@@ -43,15 +90,18 @@
       position: absolute;
       transform: translate(-50%, -50%);
     }
+
     .goal { background: green; }
     .miss { background: black; }
     .block { background: red; }
+
     .legend {
       display: flex;
       justify-content: center;
       gap: 20px;
       margin-top: 10px;
     }
+
     .legend span::before {
       content: '';
       display: inline-block;
@@ -61,18 +111,10 @@
       margin-right: 5px;
       vertical-align: middle;
     }
+
     .legend .goal::before { background: green; }
     .legend .miss::before { background: black; }
     .legend .block::before { background: red; }
-    .clear-btn {
-      margin-top: 10px;
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -108,7 +150,7 @@
     </label>
   </div>
 
-  <div class="rink-container" id="rink"></div>
+  <div class="rink-container" id="rink" oncontextmenu="return false;"></div>
 
   <div class="legend">
     <span class="goal">Goal</span>
