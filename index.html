@@ -2,61 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hockey Shot Tracker</title>
+  <title>StatStrat's Hockey Shot Plotter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      margin: 0;
       font-family: sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+    }
+    header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .inputs, .controls {
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #111;
+      gap: 10px;
+      margin: 10px auto;
+      flex-wrap: wrap;
     }
-
-    #rink {
-      background: url('rink.png') no-repeat center/contain;
+    input, select, button {
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+    .rink-container {
+      position: relative;
       width: 800px;
       height: 400px;
-      position: relative;
+      margin: 20px auto;
+      background: url('rink.png') no-repeat center/contain;
+      border: 1px solid #ccc;
     }
-
-    .shot {
+    .dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
       position: absolute;
       transform: translate(-50%, -50%);
     }
-
-    .goal {
-      background: red;
+    .goal { background: green; }
+    .miss { background: black; }
+    .block { background: red; }
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
     }
-
-    .miss {
-      background: blue;
+    .legend span::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .legend .goal::before { background: green; }
+    .legend .miss::before { background: black; }
+    .legend .block::before { background: red; }
+    .clear-btn {
+      margin-top: 10px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div id="rink" oncontextmenu="return false;"></div>
+  <header>StatStrat's Hockey Shot Plotter</header>
+
+  <div class="inputs">
+    <input type="text" placeholder="Home Team" id="homeTeam" />
+    <input type="text" placeholder="Away Team" id="awayTeam" />
+    <input type="date" id="gameDate" />
+  </div>
+
+  <div class="controls">
+    <label>Period:
+      <select id="period">
+        <option>1</option><option>2</option><option>3</option><option>OT</option>
+      </select>
+    </label>
+    <label>Team:
+      <select id="team">
+        <option value="home">Home</option>
+        <option value="away">Away</option>
+      </select>
+    </label>
+    <label>Player #:
+      <input type="text" id="playerNumber" />
+    </label>
+    <label>Shot Type:
+      <select id="shotType">
+        <option value="goal">Goal</option>
+        <option value="miss">Miss</option>
+        <option value="block">Block</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="rink-container" id="rink"></div>
+
+  <div class="legend">
+    <span class="goal">Goal</span>
+    <span class="miss">Miss</span>
+    <span class="block">Block</span>
+  </div>
+
+  <button class="clear-btn" onclick="clearShots()">Clear All</button>
 
   <script>
     const rink = document.getElementById('rink');
-    rink.addEventListener('mousedown', function (e) {
+
+    rink.addEventListener('click', function (e) {
       const rect = rink.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const result = e.button === 2 ? 'miss' : 'goal';
+      const shotType = document.getElementById('shotType').value;
 
       const dot = document.createElement('div');
-      dot.classList.add('shot', result);
+      dot.classList.add('dot', shotType);
       dot.style.left = x + 'px';
       dot.style.top = y + 'px';
-
       rink.appendChild(dot);
     });
+
+    function clearShots() {
+      rink.querySelectorAll('.dot').forEach(dot => dot.remove());
+    }
   </script>
 </body>
 </html>
